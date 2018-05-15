@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native'
 import config from './config'
 
 class InstaClone extends Component {
@@ -7,13 +7,20 @@ class InstaClone extends Component {
     constructor(){
         super();
         this.state = {
-            screenWidth: 0
+            screenWidth: Dimensions.get('window').width,
+            liked: false,
         };
     }
 
     componentDidMount(){
         this.setState({
             screenWidth: Dimensions.get('window').width
+        });
+    }
+
+    likeToggle(){
+        this.setState({
+            liked: !this.state.liked
         });
     }
 
@@ -36,15 +43,22 @@ class InstaClone extends Component {
                         <Text style={{fontSize: 30}}>...</Text>
                     </View>
                 </View>
+                <TouchableOpacity onPress={()=> {
+                    this.likeToggle();
+                }}>
                 <Image
-                style={{width:this.state.screenWidth, height:425}}
-                source={{
-                    uri: 
-                    imageUri
-                }} 
+                    style={{width:this.state.screenWidth, height:425}}
+                    source={{
+                        uri: 
+                        imageUri
+                    }} 
                 />
+                </TouchableOpacity>
+                
                 <View style={styles.iconBar}>
-
+                    <Image style={[styles.icon, {height: 40, width: 40, tintColor: "rgb(252,61,57)"}]} source={config.images.heartIcon}/>
+                    <Image style={[styles.icon, {height: 36, width: 36}]} source={config.images.chatIcon}/>
+                    <Image style={[styles.icon, {height: 40, width: 40}]} source={config.images.shareIcon}/>
                 </View>
             </View>
         );
@@ -81,6 +95,10 @@ const styles = StyleSheet.create({
         borderColor: "rgb(233,233,233)",
         borderTopWidth: StyleSheet.hairlineWidth,
         borderBottomWidth: StyleSheet.hairlineWidth,
+        flexDirection: 'row'
+    },
+    icon: {
+        paddingHorizontal: 5
     }
 });
 
